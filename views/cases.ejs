@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Cases - Admin Panel</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Flatpickr CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <style>
+        /* Header Styling */
+        .navbar-header {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #fff;
+            text-align: center;
+            padding: 10px 0;
+            background-color: #dc3545;
+        }
+        .navbar {
+            background-color: #dc3545;
+        }
+        .nav-link {
+            color: #fff !important;
+            font-weight: 500;
+            font-size: 1rem;
+        }
+        .nav-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+   <!-- Navbar Header -->
+<div class="container-fluid navbar-header">
+    <div class="navbar-header">
+        CRIME RECORDS MANAGEMENT SYSTEM
+    </div>
+</div>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container">
+        <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/category">+Crime Category</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/addcases">+Add Cases</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/cases">View Cases</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+   <!-- Content -->
+<div class="container my-5">
+    <h3 class="text-center mb-4">View Cases</h3>
+    <div class="mb-4 d-flex flex-wrap align-items-center justify-content-center">
+      <!-- Dropdown for Crime Category -->
+      <select id="categoryDropdown" class="form-select me-3" style="max-width: 300px;" aria-label="Select Crime Category">
+        <option selected value="all">All Categories</option>
+        <option value="1">Robbery</option>
+        <option value="2">Assault</option>
+        <option value="3">Fraud</option>
+      </select>
+      <!-- Date Range Picker -->
+      <input type="text" id="dateRange" class="form-control me-3" style="max-width: 300px;" placeholder="Select Date Range">
+      <!-- View Cases Button -->
+      <button id="viewCasesButton" class="btn btn-outline-danger">View Cases</button>
+    </div>
+    <!-- Cases List -->
+    <div id="casesList"></div>
+  </div>
+  
+
+    <!-- Flatpickr JS -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script>
+
+const categoryDropdown = document.getElementById('categoryDropdown');
+const viewCasesButton = document.getElementById('viewCasesButton');
+const casesListDiv = document.getElementById('casesList');
+
+// Function to fetch reports
+async function fetchReports(categoryId) {
+  try {
+    let url = '/admin/reports';
+    if (categoryId !== 'all') {
+      url = `/admin/reports/by-category/${categoryId}`;
+    }
+    const response = await fetch(url);
+    const reports = await response.json();
+    return reports;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+function displayReports(reports) {
+  const reportsHtml = reports.map((report) => {
+    const createdAt = new Date(report.createdAt);
+    return `
+      <div class="container">
+        <div class="content-container">
+          <!-- Left Image Section -->
+          <div class="image-section">
+            <img src="${report.image}" alt="Report Image" style="width: 100%; height: 100%; object-fit: cover;">
+          </div>
+          <!-- Right Details Section -->
+          <div class="details-section">
+            <a href="comment.html"><h2 style="font-size: 1.5rem; margin-bottom: 10px; color: #333;">${report.topic}</h2></a>
+            <p style="font-size: 1rem; color: #555; margin-bottom: 15px;">${report.fullDescription}</p>
+            <div class="meta-info" style="display: flex; justify-content: space-between; font-size: 0.9rem; color: #888;">
+              <p>${createdAt.toLocaleDateString()} ${createdAt.toLocaleTimeString()}</p>
+              <a href="comment.html" style="text-decoration: none; color: #888;">${report.comments.length} comments</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+  casesListDiv.innerHTML = reportsHtml;
+}
+
+
+
+// Event listener for view cases button
+viewCasesButton.addEventListener('click', async () => {
+  const categoryId = categoryDropdown.value;
+  const reports = await fetchReports(categoryId);
+  displayReports(reports);
+});
+
+// Fetch and display reports by default
+fetchReports('all').then((reports) => {
+  displayReports(reports);
+});
+
+
+    </script>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
