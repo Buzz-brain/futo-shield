@@ -24,6 +24,9 @@ app.get('/admin', (req, res) => {
 app.get('/login', (req, res) => {
   res.render('login');
 });
+app.get('/category', (req, res) => {
+  res.render('category');
+});
 app.get('/categorypage', (req, res) => {
   res.render('categorypage');
 });
