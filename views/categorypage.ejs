@@ -170,85 +170,36 @@
         </div>
 
         <!-- Main Navigation Bar -->
-        <nav class="navbar navbar-expand-lg navbar-light bg-light ">
-            <div class="container">
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav mx-auto">
-                        <li class="nav-item"><a class="nav-link" href="home.html">HOME</a></li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">CRIME</a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="assault.html">rape</a></li>
-                                <li><a class="dropdown-item" href="assault.html">Assault</a></li>
-                                <li><a class="dropdown-item" href="#">Robbery</a></li>
-                                <li><a class="dropdown-item" href="#">Burglary</a></li>
-                                <li><a class="dropdown-item" href="#">Vandalism</a></li>
-                                <li><a class="dropdown-item" href="#">Theft</a></li>
-                            </ul>
-                        </li>
-                        <li class="nav-item"><a class="nav-link" href="#">ABOUT</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#contact-section">CONTACT </a></li>
+<!-- Main Navigation Bar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light ">
+    <div class="container">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav mx-auto">
+                <li class="nav-item"><a class="nav-link" href="home.html">HOME</a></li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">CRIME</a>
+                    <ul id="categories-menu" class="dropdown-menu">
+                        <!-- Categories will be displayed here -->
                     </ul>
-                </div>
-            </div>
-        </nav>
+                </li>
+                <li class="nav-item"><a class="nav-link" href="#">ABOUT</a></li>
+                <li class="nav-item"><a class="nav-link" href="#contact-section">CONTACT </a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
     </header>
-    <section class="assault-work">
-        <div class="container">
-            <div class="content-container">
-                <!-- Left Image Section -->
-                <div class="image-section">
-                    <img src="images/Assail.jpg" alt="Placeholder Image">
-                </div>
-                <!-- Right Details Section -->
-                <div class="details-section">
-                    <a href="comment.html"><h2>Assault with intent to commit unnatural offences.</h2></a>
-                    <p> Miming the act of hitting, punching, or kicking the victim. Brandishing a deadly or non-deadly weapon in a manner that suggests the victim will be hit with that object or hurt by it</p>
-                    <div class="meta-info">
-                        <p class="">November 16, 2024</p>
-                        <a href="comment.html">25 comments</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="container">
-            <div class="content-container">
-                <!-- Left Image Section -->
-                <div class="image-section">
-                    <img src="images/fraud.jpg" alt="Placeholder Image">
-                </div>
-                <!-- Right Details Section -->
-                <div class="details-section">
-                    <a href="comment.html"><h2>Assault with intent to conjoin action.</h2></a>
-                    <p> Miming the act of hitting, punching, or kicking the victim. Brandishing a deadly or non-deadly weapon in a manner that suggests the victim will be hit with that object or hurt by it</p>
-                    <div class="meta-info">
-                        <p class="">November 16, 2024</p>
-                        <a href="comment.html">25 comments</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="container">
-            <div class="content-container">
-                <!-- Left Image Section -->
-                <div class="image-section">
-                    <img src="images/Vandalism.jpg" alt="Placeholder Image">
-                </div>
-                <!-- Right Details Section -->
-                <div class="details-section">
-                    <a href="comment.html"><h2>Attempting to spit on the victim.</h2></a>
-                    <p> Miming the act of hitting, punching, or kicking the victim. Brandishing a deadly or non-deadly weapon in a manner that suggests the victim will be hit with that object or hurt by it</p>
-                    <div class="meta-info">
-                        <p class="">November 16, 2024</p>
-                        <a href="comment.html">25 comments</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+<!-- Reports Section -->
+<section class="assault-work" id="reports-section">
+    <div class="container">
+        <!-- Reports will be displayed here -->
+    </div>
+</section>
+
 
      <!-- footer -->
      <footer class="footer">
@@ -296,6 +247,128 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.js"></script>
 </body>
+
+<script>
+    // Get the categories menu element
+const categoriesMenu = document.getElementById('categories-menu');
+
+// Get the reports section element
+const reportsSection = document.getElementById('reports-section');
+
+// Function to fetch categories
+async function fetchCategories() {
+    try {
+        const response = await fetch('/admin/categories');
+        const categories = await response.json();
+
+        // Display the categories
+        displayCategories(categories);
+
+        // Fetch reports for all categories
+        fetchReportsForAllCategories(categories);
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+
+// Function to display the categories
+function displayCategories(categories) {
+    categoriesMenu.innerHTML = '';
+
+    categories.forEach((category) => {
+        const categoryHTML = `
+            <li><a class="dropdown-item" href="#" data-category-id="${category._id}">${category.name}</a></li>
+ `;
+
+        categoriesMenu.insertAdjacentHTML('beforeend', categoryHTML);
+    });
+
+    // Add event listeners to the category links
+    const categoryLinks = categoriesMenu.querySelectorAll('.dropdown-item');
+
+    categoryLinks.forEach((link) => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+
+            const categoryId = link.getAttribute('data-category-id');
+
+            // Fetch reports by category
+            fetchReports(categoryId);
+        });
+    });
+}
+// Function to fetch reports for all categories
+async function fetchReportsForAllCategories(categories) {
+    try {
+        const promises = categories.map((category) => {
+            return fetch(`/admin/reports/by-category/${category._id}`);
+        });
+
+        const responses = await Promise.all(promises);
+
+        const reports = await Promise.all(responses.map((response) => response.json()));
+
+        // Flatten the reports array
+        const flattenedReports = reports.flat();
+
+        // Display the reports
+        displayReports(flattenedReports, categories);
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+// Function to fetch reports by category
+async function fetchReports(categoryId) {
+    try {
+        const response = await fetch(`/admin/reports/by-category/${categoryId}`);
+        const reports = await response.json();
+
+        // Display the reports
+        displayReports(reports);
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+// Function to display the reports
+function displayReports(reports, categories) {
+    const reportsContainer = reportsSection.querySelector('.container');
+    reportsContainer.innerHTML = '';
+
+    reports.forEach((report) => {
+        const categoryName = categories.find((category) => category._id === report.category).name;
+
+        const reportHTML = `
+            <div class="content-container">
+                <!-- Left Image Section -->
+                <div class="image-section">
+                    <img src="${report.image}" alt="Placeholder Image">
+                </div>
+                <!-- Right Details Section -->
+                <div class="details-section">
+                    <a href="comment.html"><h2>${report.topic}</h2></a>
+                    <p>${report.briefDescription}</p>
+                    <div class="meta-info">
+                        <p class="">${new Date(report.createdAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}</p>
+                        <p>Category: ${categoryName}</p>
+                        <a href="comment.html">${report.comments.length} comments</a>
+                    </div>
+                </div>
+            </div>
+        `;
+        reportsContainer.insertAdjacentHTML('beforeend', reportHTML);
+    });
+}
+
+
+
+// Fetch categories when the page loads
+fetchCategories();
+
+</script>
 </html>
+
 
 

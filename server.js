@@ -24,14 +24,17 @@ app.get('/admin', (req, res) => {
 app.get('/login', (req, res) => {
   res.render('login');
 });
-app.get('/category', (req, res) => {
-  res.render('category');
+app.get('/categorypage', (req, res) => {
+  res.render('categorypage');
 });
 app.get('/addcases', (req, res) => {
   res.render('addcases');
 });
 app.get('/cases', (req, res) => {
   res.render('cases');
+});
+app.get('/assault', (req, res) => {
+  res.render('assault');
 });
 
 
