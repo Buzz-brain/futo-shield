@@ -3,9 +3,13 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const cloudinary = require('cloudinary').v2;
+const cors = require('cors');
+
 
 const app = express();
 app.use(express.json());
+app.use(cors());
+
 
 mongoose.connect('mongodb+srv://chinomsochristian03:ahYZxLh5loYrfgss@cluster0.dmkcl.mongodb.net/crimelog?retryWrites=true&w=majority');
 
