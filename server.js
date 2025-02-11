@@ -69,7 +69,7 @@ app.get('/report', (req, res) => {
 });
 // Render Login Page
 app.get('/adminLogin', (req, res) => {
-  res.render('adminLogin');
+  res.render('adminlogin');
 });
 // Render View Admin Report Page
 app.get('/admin', (req, res) => {
