@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Incident Reporting System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap"
+        rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+    <link href="https://ai-public.creatie.ai/gen_page/tailwind-custom.css" rel="stylesheet" />
+    <script
+        src="https://cdn.tailwindcss.com/3.4.5?plugins=forms@0.5.7,typography@0.5.13,aspect-ratio@0.4.2,container-queries@0.1.1"></script>
+    <script src="https://ai-public.creatie.ai/gen_page/tailwind-config.min.js" data-color="#000000"
+        data-border-radius="small"></script>
+</head>
+
+<body class="bg-gray-50 min-h-screen">
+    <div class="flex min-h-screen">
+        <div class="flex flex-col w-full">
+            <nav class="bg-white border-b border-gray-200">
+                <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
+                    
+                    <div class="flex justify-between h-16">
+                        <div class="flex">
+                            <div class="flex-shrink-0 flex items-center">
+                              <h1 style="color: red; font-size: 2rem;">Futo <span style="color: black">Shield</span> </h1>
+
+                            </div>
+                        </div>
+                        <div class="flex items-center">
+                          <a href="/adminform">
+                          <button type="button"
+                                class="!rounded-button mr-5 bg-red-600 px-4 py-2 text-white font-medium hover:bg-red-700"><i
+                                    class="fas fa-plus mr-2"></i>Create Report
+                            </button></a>
+                            <button type="button" id="logout-btn"
+                                class="!rounded-button bg-custom px-4 py-2 text-white font-medium hover:bg-custom/90">
+                                <i class="fas fa-sign-out-alt mr-2"></i>Logout
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </nav>
+            <div class="flex-1 relative z-0 flex">
+                <main class="flex-1 relative z-0 focus:outline-none">
+                    <div class="py-6">
+                        <div class="max-w-8xl mx-auto px-4 sm:px-6 md:px-8">
+                            <div class="flex justify-between items-center mb-6">
+                                <h1 class="text-2xl font-semibold text-gray-900">Reported Incidents</h1>
+                                <div class="flex space-x-4">
+                                    <select
+                                        class="!rounded-button cursor-pointer border-gray-300 text-gray-700 py-2 pl-3 pr-8 focus:ring-custom focus:border-custom">
+                                        <option>All Categories</option>
+                                        <option>Theft</option>
+                                        <option>Vandalism</option>
+                                        <option>Rape</option>
+                                        <option>Burglary</option>
+                                        <option>Kidnapping</option>
+                                    </select>
+                                    
+
+
+
+
+
+                                    <select
+                                        class="!rounded-button cursor-pointer border-gray-300 text-gray-700 py-2 pl-3 pr-8 focus:ring-custom focus:border-custom">
+                                        <option>All Status</option>
+                                        <option>Unverified</option>
+                                        <option>Verified</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div id="viewReport" class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                            </div>
+                        </div>
+                    </div>
+                </main>
+                
+            </div>
+        </div>
+        
+    </div>
+    <footer class="bg-white mt-12">
+      <div class="max-w-8xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+          <div class="text-center text-sm text-gray-500">
+              © 2025 All rights reserved.
+          </div>
+      </div>
+  </footer>
+
+    <script>
+        const token = localStorage.getItem('token');
+        const incidentContainer = document.getElementById('viewReport');
+
+
+function reloadIncidents() {
+  incidentContainer.innerHTML = ''; // Clear the container
+
+  fetch('http://localhost:3000/admin/incidents', {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    },
+  })
+    .then(response => response.json())
+    .then(data => {
+      const incidents = data;
+      incidents.forEach(incident => {
+        const incidentHTML = `
+<div class="bg-white overflow-hidden shadow rounded-lg" >
+  <div class="p-6">
+    <div>
+
+<div onclick="viewIncidentDetails('${incident._id}')">
+  <div style = "width: 100%; display: flex; justify-content: space-between;" >
+      <p id="status" class=" mb-4 px-2.5 py-0.5 rounded-full text-xs font-medium 
+        ${incident.status === 'Verified' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}">
+        ${incident.status}</p>
+
+        <p id="category" class="text-sm text-gray-500">${incident.category}</p>
+      </div>
+
+      <img id="image" src="${incident.image}" alt="Incident Image" class="w-full h-48 object-cover rounded-lg mb-4" />
+
+      <h3 id="title" class="text-lg font-medium text-gray-900 mb-2">${incident.title}</h3>
+      <p id="description" class="text-gray-500 text-sm mb-4">${incident.description}</p>
+      <p id="reportedBy" class="text-black-700 text-sm mb-4">Reported by ${incident.reportedBy}</p>
+</div>
+    
+      
+      <div class="flex space-x-3">
+        ${incident.status === 'Pending' ?
+            `<button class="!rounded-button flex-1 bg-custom text-white px-4 py-2 hover:bg-custom/90" onclick="approveIncident('${incident._id}')"><i class="fas fa-check mr-2"></i>Approve</button>`
+            :
+            `<button class="!rounded-button flex-1 bg-red-600 text-white px-4 py-2 hover:bg-red-700" onclick="unapproveIncident('${incident._id}')"><i class="fas fa-times mr-2"></i>Unapprove</button>`}
+
+        ${incident.status === 'Unverified' ?
+            `<button class="!rounded-button flex-1 bg-green-600 text-white px-4 py-2 hover:bg-green-700" onclick="verifyIncident('${incident._id}')"><i class="fas fa-check-double mr-2"></i>Verify</button>`
+            : incident.status === 'Verified' ?
+              `<button class="!rounded-button flex-1 bg-red-600 text-white px-4 py-2 hover:bg-red-700" onclick="unverifyIncident('${incident._id}')"><i class="fas fa-times mr-2"></i>Unverify</button>`
+              : ''}
+        <button class="!rounded-button flex-1 bg-red-600 text-white px-4 py-2 hover:bg-red-700" onclick="deleteIncident('${incident._id}')"><i class="fas fa-trash mr-2"></i>Delete</button>
+
+      </div>
+  </div>
+</div>
+
+      `;
+        incidentContainer.insertAdjacentHTML('beforeend', incidentHTML);
+      });
+    })
+    .catch(error => console.error(error));
+}
+
+
+ reloadIncidents()
+
+ function viewIncidentDetails(incidentId) {
+  window.location.href = `/detail?incidentId=${incidentId}`;
+}
+
+function approveIncident(incidentId) {
+  fetch(`http://localhost:3000/admin/approve-incident`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    },
+    body: JSON.stringify({ incidentId }),
+  })
+    .then(response => response.json())
+    .then(data => {
+      console.log(data);
+      reloadIncidents(); // Reload incidents after approval
+    })
+    .catch(error => console.error(error));
+}
+
+function unapproveIncident(incidentId) {
+  fetch(`http://localhost:3000/admin/unapprove-incident`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    },
+    body: JSON.stringify({ incidentId }),
+  })
+    .then(response => response.json())
+    .then(data => {
+      console.log(data);
+      reloadIncidents(); // Reload incidents after unapproval
+    })
+    .catch(error => console.error(error));
+}
+
+function verifyIncident(incidentId) {
+  fetch(`http://localhost:3000/admin/verify-incident`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    },
+    body: JSON.stringify({ incidentId }),
+  })
+    .then(response => response.json())
+    .then(data => {
+      console.log(data);
+      reloadIncidents(); // Reload incidents after verification
+    })
+    .catch(error => console.error(error));
+}
+
+function unverifyIncident(incidentId) {
+  fetch(`http://localhost:3000/admin/unverify-incident`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    },
+    body: JSON.stringify({ incidentId }),
+  })
+    .then(response => response.json())
+    .then(data => {
+      console.log(data);
+      reloadIncidents(); // Reload incidents after unverification
+    })
+    .catch(error => console.error(error));
+}
+
+function deleteIncident(incidentId) {
+  fetch(`http://localhost:3000/admin/delete-incident`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    },
+    body: JSON.stringify({ incidentId }),
+  })
+    .then(response => response.json())
+    .then(data => {
+      console.log(data);
+      reloadIncidents(); // Reload incidents after deletion
+    })
+    .catch(error => console.error(error));
+}
+
+
+// Assuming you have a logout button with an ID of "logout-btn"
+const logoutBtn = document.getElementById('logout-btn');
+
+logoutBtn.addEventListener('click', () => {
+  // Remove the token from local storage
+  localStorage.removeItem('token');
+
+  // Redirect to the login page
+window.location.replace('/adminLogin');
+
+  
+});
+
+    </script>
+
+</body>
+
+</html>
+
+<!-- <i class="fas fa-check-double mr-2"></i> -->
+<!-- <div class="flex items-center text-sm text-gray-500">
+  <i class="fas fa-tag mr-2"></i>
+  <span>Category: Theft</span>
+</div> -->
+<!-- <div class="flex justify-between h-16"><div class="flex"><div class="flex-shrink-0 flex items-center"><img class="h-8 w-auto" src="https://ai-public.creatie.ai/gen_page/logo_placeholder.png" alt="Logo"/></div><button class="ml-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium text-gray-500 hover:text-gray-700" onclick="document.getElementById(&#34;incident-details&#34;).classList.add(&#34;hidden&#34;); document.getElementById(&#34;student-dashboard&#34;).classList.remove(&#34;hidden&#34;);"><i class="fas fa-arrow-left mr-2"></i>Back to Dashboard</button> -->

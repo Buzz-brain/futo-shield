@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Report Form</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap"
+        rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+    <link href="https://ai-public.creatie.ai/gen_page/tailwind-custom.css" rel="stylesheet" />
+    <script
+        src="https://cdn.tailwindcss.com/3.4.5?plugins=forms@0.5.7,typography@0.5.13,aspect-ratio@0.4.2,container-queries@0.1.1"></script>
+    <script src="https://ai-public.creatie.ai/gen_page/tailwind-config.min.js" data-color="#000000"
+        data-border-radius="small"></script>
+</head>
+
+<body class="bg-gray-50">
+    <div class="min-h-screen">
+        <nav class="bg-white shadow">
+            <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between h-16">
+                    <div class="flex">
+                        <div class="flex-shrink-0 flex items-center">
+                          <h1 style="color: red; font-size: 2rem;">Futo <span style="color: black">Shield</span> </h1>
+
+                        </div>
+                    </div>
+                    <div class="flex items-center">
+                      <a href="/report">
+                      <button type="button"
+                            class="!rounded-button mr-5 bg-red-600 px-4 py-2 text-white font-medium hover:bg-red-700">Back
+                        </button></a>
+                    </div>
+                </div>
+
+            </div>
+        </nav>
+        <main class="max-w-4xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
+            <div class="bg-white shadow rounded-lg">
+                <div class="px-6 py-5 border-b border-gray-200">
+                    <h1 class="text-2xl font-semibold text-gray-900">Create Report as a student</h1>
+                    <p class="mt-1 text-sm text-gray-500">Please fill in the details below to submit your report.</p>
+                </div>
+
+                <form id="createReport" class="space-y-6 px-6 py-6">
+                    <div>
+                        <div class="flex items-center justify-between">
+                            <label for="title" class="block text-sm font-medium text-gray-700">Title</label>
+                        </div>
+                        <input type="text" id="title" name="title"
+                            class="mt-1 block w-full border-gray-300 focus:border-custom focus:ring-custom !rounded-button"
+                            placeholder="Enter report title" />
+                    </div>
+                    <div class="grid grid-cols-2 gap-6">
+                        <div>
+                            <label for="category" class="block text-sm font-medium text-gray-700">Category</label>
+                            <select id="category" name="category"
+                                class="mt-1 block w-full border-gray-300 focus:border-custom focus:ring-custom !rounded-button">
+                                <option>Theft</option>
+                                <option>Vandalism</option>
+                                <option>Rape</option>
+                                <option>Burglary</option>
+                                <option>Kidnapping</option>
+                            </select>
+                        </div>
+
+                    </div>
+                    <div>
+                        <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
+                        <div class="mt-1">
+                            <textarea id="description" name="description" rows="4"
+                                class="block w-full border-gray-300 focus:border-custom focus:ring-custom !rounded-button"
+                                placeholder="Provide a detailed description"></textarea>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Media Attachments</label>
+                        <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed !rounded-button">
+                          <div class="space-y-1 text-center">
+                            <i class="fas fa-cloud-upload-alt text-4xl text-gray-400"></i>
+                            <div class="flex text-sm text-gray-600">
+                              <label for="image" class="relative cursor-pointer bg-white !rounded-button font-medium text-custom hover:text-custom focus-within:outline-none">
+                                <span>Upload files</span>
+                                <input id="image" name="image" type="file" class="sr-only" />
+                              </label>
+                              <!-- <p class="pl-1">or drag and drop</p> -->
+                            </div>
+                            <p class="text-xs text-gray-500">PNG, JPG, GIF up to 10MB</p>
+                          </div>
+                        </div>
+                      </div>
+                    
+                    <div>
+                        <label for="content" class="block text-sm font-medium text-gray-700">Content</label>
+                        <div class="mt-1">
+                            <textarea id="content" name="content" rows="8"
+                                class="block w-full border-gray-300 focus:border-custom focus:ring-custom !rounded-button"
+                                placeholder="Enter the main content of your report"></textarea>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-end space-x-4 pt-4 border-t">
+                        <a href="/report"><button type="button"
+                            class="!rounded-button px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 hover:bg-gray-50">
+                            Cancel
+                        </button></a>
+                        <button type="submit"
+                            class="!rounded-button px-6 py-2 text-sm font-medium text-white bg-custom hover:bg-custom/90">
+                            Submit Report
+                        </button>
+                    </div>
+                </form>
+
+            </div>
+        </main>
+        <footer class="bg-white mt-12">
+            <div class="max-w-8xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                <div class="text-center text-sm text-gray-500">
+                    © 2025 All rights reserved.
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+<script>
+   const form = document.getElementById('createReport');
+const uploadPreset = 'upload_preset'; // Replace with your upload preset
+const cloudName = 'df2q6gyuq'; // Replace with your cloud name
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const formData = new FormData(form);
+  const image = formData.get('image');
+
+  if (image) {
+    const uploadUrl = `https://api.cloudinary.com/v1_1/${cloudName}/upload`;
+    const uploadData = new FormData();
+    uploadData.append('file', image);
+    uploadData.append('upload_preset', uploadPreset);
+
+    try {
+      const response = await fetch(uploadUrl, {
+        method: 'POST',
+        body: uploadData,
+      });
+
+      const uploadResult = await response.json();
+
+      if (!uploadResult || !uploadResult.secure_url) {
+        console.error('Error uploading image:', uploadResult.error || 'Unknown error');
+        return;
+      }
+
+      formData.set('image', uploadResult.secure_url);
+    } catch (error) {
+      console.error('Error uploading image:', error);
+      return;
+    }
+  }
+
+  const reportData = Object.fromEntries(formData);
+
+  try {
+    const response = await fetch('http://localhost:3000/student/report-incident', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(reportData),
+    });
+
+    const data = await response.json();
+    console.log(data);
+    // Redirect to the /report page
+  window.location.replace('/report');
+  } catch (error) {
+    console.error('Error creating report:', error);
+  }
+});
+
+
+</script>
+    
+    </body>
+
+    </html>
