@@ -61,7 +61,7 @@
   const incidentId = new URLSearchParams(window.location.search).get('incidentId');
   const viewCtn = document.getElementById('viewCtn');
 
-  fetch(`http://localhost:3000/student/incident/${incidentId}`)
+  fetch(`/student/incident/${incidentId}`)
     .then(response => response.json())
     .then(data => {
       const incident = data;

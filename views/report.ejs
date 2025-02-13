@@ -89,7 +89,7 @@
 function reloadIncidents() {
   incidentContainer.innerHTML = ''; // Clear the container
 
-  fetch('http://localhost:3000/student/incidents')
+  fetch('/student/incidents')
     .then(response => response.json())
     .then(data => {
       const incidents = data;

@@ -100,7 +100,7 @@
 function reloadIncidents() {
   incidentContainer.innerHTML = ''; // Clear the container
 
-  fetch('http://localhost:3000/admin/incidents', {
+  fetch('/admin/incidents', {
     headers: {
       Authorization: `Bearer ${localStorage.getItem('token')}`,
     },
@@ -163,7 +163,7 @@ function reloadIncidents() {
 }
 
 function approveIncident(incidentId) {
-  fetch(`http://localhost:3000/admin/approve-incident`, {
+  fetch(`/admin/approve-incident`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -180,7 +180,7 @@ function approveIncident(incidentId) {
 }
 
 function unapproveIncident(incidentId) {
-  fetch(`http://localhost:3000/admin/unapprove-incident`, {
+  fetch(`/admin/unapprove-incident`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -197,7 +197,7 @@ function unapproveIncident(incidentId) {
 }
 
 function verifyIncident(incidentId) {
-  fetch(`http://localhost:3000/admin/verify-incident`, {
+  fetch(`/admin/verify-incident`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -214,7 +214,7 @@ function verifyIncident(incidentId) {
 }
 
 function unverifyIncident(incidentId) {
-  fetch(`http://localhost:3000/admin/unverify-incident`, {
+  fetch(`/admin/unverify-incident`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -231,7 +231,7 @@ function unverifyIncident(incidentId) {
 }
 
 function deleteIncident(incidentId) {
-  fetch(`http://localhost:3000/admin/delete-incident`, {
+  fetch(`/admin/delete-incident`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

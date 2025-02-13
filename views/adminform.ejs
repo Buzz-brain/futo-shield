@@ -167,7 +167,7 @@ form.addEventListener('submit', async (e) => {
   const reportData = Object.fromEntries(formData);
 
   try {
-    const response = await fetch('http://localhost:3000/admin/report-incident', {
+    const response = await fetch('/admin/report-incident', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
